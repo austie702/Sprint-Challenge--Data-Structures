@@ -34,22 +34,12 @@ class HashTable {
   // If no bucket has been created for that index, instantiate a new bucket and add the key, value pair to that new bucket
   // If the key already exists in the bucket, the newer value should overwrite the older value associated with that key
   insert(key, value) {
-    /*
-    Haha. Ok so to whomever is reading this, you poor poor thing. Alright so here was my thinking.
-    I began with wondering if I should nuke the whole LimitedArray class altogether and rewrite absolutely everything. But I don't think that idea would have held up because I need to keep so much else preserved. Then the notion hit me that I'm only changing the buckets, not the rest of the code... So all that jazz that isn't specifically a bucket was probably fine to stay, right?
-
-    So maybe, right? I have to move forward with Something Eventually. So I went down the mental path of taking the original line39's bucket variable and changing it to a new LinkedList() constructor. Then I can start using the push function to build out the LinkedList using the LinkedList.addToTail() function.
-
-    In my mind, IF this is the right branch to walk out on and it doesn't snap in a couple more steps, I could see this working by extrapolating the idea out to the rest of the code with a full refactor pass through that lense alone. 
-
-    This has been CodeyThoughts by Austin. Thank you for watching! Please remember to hit like and subscribe.
-    */
     if (this.capacityIsFull()) this.resize();
     const index = getIndexBelowMax(key.toString(), this.limit);
-    let bucket = new LinkedList();
+    let bucket = this.storage.get(index) || [];
 
     bucket = bucket.filter(item => item[0] !== key);
-    bucket.push(LinkedList.addToTail(index));
+    bucket.push([key, value]);
     this.storage.set(index, bucket);
   }
   // Removes the key, value pair from the hash table
